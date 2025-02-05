@@ -488,7 +488,7 @@ export default function Tennat() {
 
   return (
     <>
-      {status === "loading" ? (
+      {loading  ? (
         <div className="w-full h-full col-span-3 flex justify-center items-center">
           <span className="loader3 "></span>
         </div>
