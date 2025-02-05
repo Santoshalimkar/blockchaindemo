@@ -1,5 +1,10 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Providers } from "./providers";
+import { ReduxProviders } from "@/lib/Redux/providers";
+import Nav from "@/components/Dashboardcomponent/Nav";
+import Sidenav from "@/components/Dashboardcomponent/Sidenav";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,12 +23,25 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
+    <ReduxProviders>
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <Providers>
+        <main className="grid grid-cols-1 md:grid-cols-[auto,1fr]    w-full">
+        <div className="w-full h-full md:h-screen overflow-hidden">
+          <Sidenav />
+        </div>
+
+        <section className="flex  flex-col  w-full  h-full md:h-screen p-0 ">
+          <Nav />
+          <ScrollArea className="w-full  ">{children}</ScrollArea>
+        </section>
+      </main>
+        </Providers>
       </body>
     </html>
+</ReduxProviders>
   );
 }
