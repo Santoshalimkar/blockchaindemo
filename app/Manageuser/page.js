@@ -49,6 +49,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { fetchAllUsers } from "@/lib/Redux/usersSlice";
 import { GetAlluser } from "@/lib/API/Manageuser";
 import {TicketPlus} from "lucide-react"
+import Createuser from "@/components/Usercomponents/Createuser";
 const columns = [
   { name: "ID", uid: "_id" },
   { name: "Name", uid: "Name" },
@@ -113,44 +114,44 @@ export default function Tennat() {
   const [page, setPage] = React.useState(1);
 
 
-  // useEffect(() => {
-  //   dispatch(fetchAllUsers());  
-  // }, [dispatch]);
-
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          "https://wallet-seven-fawn.vercel.app/api/v1/users/alluser",
-          {
-            method: "GET",
-            headers: {
-              token:
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YTBlZmQ2ODk3MWVhNGZjM2M4MmNiOCIsImlhdCI6MTczODY4OTYzMiwiZXhwIjoxNzM4Nzc2MDMyfQ.Oo1te_YFzH5SMyoGKyewQz-lBxknfMEzkWsquygAl7I",
-            },
-          }
-        );
+    dispatch(fetchAllUsers());  
+  }, [dispatch]);
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch(
+  //         "https://wallet-seven-fawn.vercel.app/api/v1/users/alluser",
+  //         {
+  //           method: "GET",
+  //           headers: {
+  //             token:
+  //               "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YTBlZmQ2ODk3MWVhNGZjM2M4MmNiOCIsImlhdCI6MTczODY4OTYzMiwiZXhwIjoxNzM4Nzc2MDMyfQ.Oo1te_YFzH5SMyoGKyewQz-lBxknfMEzkWsquygAl7I",
+  //           },
+  //         }
+  //       );
 
-        const result = await response.json();
-        if (result.status === true) {
-          setData(result.data); // Set data if successful
-        } else {
-          throw new Error("Error fetching data");
-        }
-      } catch (error) {
-        console.log(error.message); // Set error if fetching fails
-      } 
-    };
-    fetchData()
-  }, [])
+  //       if (!response.ok) {
+  //         throw new Error("Failed to fetch data");
+  //       }
+
+  //       const result = await response.json();
+  //       if (result.status === true) {
+  //         setData(result.data); // Set data if successful
+  //       } else {
+  //         throw new Error("Error fetching data");
+  //       }
+  //     } catch (error) {
+  //       console.log(error.message); // Set error if fetching fails
+  //     } 
+  //   };
+  //   fetchData()
+  // }, [])
   
 
 
-  const pages = Math.ceil(userdata?.length / rowsPerPage);
+  const pages = Math.ceil(users?.length / rowsPerPage);
 
   const hasSearchFilter = Boolean(filterValue);
 
@@ -163,26 +164,26 @@ export default function Tennat() {
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredUsers = Array.isArray(userdata) ? [...userdata] : [];
+    let filteredUsers = Array.isArray(users) ? [...users] : [];
 
     if (hasSearchFilter) {
       filteredUsers = filteredUsers.filter(
         (user) =>
           typeof user.Name === "string" &&
-        userdata.Name.toLowerCase().includes(filterValue.toLowerCase())
+        users.Name.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
     if (
       statusFilter !== "all" &&
       Array.from(statusFilter).length !== statusOptions.length
     ) {
-      filteredUsers = filteredUsers.filter((userdata) =>
+      filteredUsers = filteredUsers.filter((users) =>
         Array.from(statusFilter).includes(userdata.rank)
       );
     }
 
     return filteredUsers;
-  }, [userdata, filterValue, statusFilter]);
+  }, [users, filterValue, statusFilter]);
 
   const items = React.useMemo(() => {
     const start = (page - 1) * rowsPerPage;
@@ -564,10 +565,10 @@ export default function Tennat() {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col text-center">
-                Create New Tenant
+                Create New User
               </ModalHeader>
               <ModalBody>
-                {/* <Createtennat Setopenmodal={Setopenmodal} /> */}
+                <Createuser Setopenmodal={Setopenmodal} />
               </ModalBody>
               <ModalFooter className="flex justify-center items-center text-center"></ModalFooter>
             </>
